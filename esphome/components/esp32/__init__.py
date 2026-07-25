@@ -68,6 +68,7 @@ from .const import (
     KEY_ESP32,
     KEY_EXCLUDE_COMPONENTS,
     KEY_EXTRA_BUILD_FILES,
+    KEY_EXTRA_CMAKE,
     KEY_FLASH_SIZE,
     KEY_FULL_CERT_BUNDLE,
     KEY_IDF_VERSION,
@@ -521,6 +522,7 @@ def set_core_data(config):
     CORE.data[KEY_ESP32][KEY_FLASH_SIZE] = config[CONF_FLASH_SIZE]
     CORE.data[KEY_ESP32][KEY_VARIANT] = variant
     CORE.data[KEY_ESP32][KEY_EXTRA_BUILD_FILES] = {}
+    CORE.data[KEY_ESP32][KEY_EXTRA_CMAKE] = []
 
     return config
 
@@ -771,6 +773,16 @@ def add_extra_build_file(filename: str, path: Path) -> bool:
         }
         return True
     return False
+
+
+def add_extra_cmake_code(code: str) -> None:
+    """Register custom CMake code to be appended to the generated src/CMakeLists.txt.
+
+    This is used by components that need to inject build logic (e.g. ULP firmware
+    compilation via ``ulp_embed_binary()``) into the ESP-IDF component CMakeLists.txt
+    that ESPHome auto-generates in ``build_gen/espidf.py``.
+    """
+    CORE.data[KEY_ESP32][KEY_EXTRA_CMAKE].append(code)
 
 
 def _format_framework_arduino_version(ver: cv.Version) -> str:
