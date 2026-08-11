@@ -33,4 +33,4 @@ filelock==3.32.0  # lock guarding the PlatformIO python-version cache heal
 pyparsing >= 3.3.2
 
 # For autocompletion
-argcomplete>=3.7.0
+argcomplete>=3.7.2
